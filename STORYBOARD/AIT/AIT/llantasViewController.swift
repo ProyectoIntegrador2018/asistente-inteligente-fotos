@@ -23,7 +23,6 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("hola")
     }
     
     func setupLivePreview() {
@@ -48,6 +47,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             else { return }
         
         let image = UIImage(data: imageData)
+        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
         photoView.image = image
     }
     
@@ -58,7 +58,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         guard let backCamera = AVCaptureDevice.default(for: AVMediaType.video)
             else {
-                print("No se Pudo acceder a la camara trasera.")
+                print("No se pudo acceder a la camara trasera.")
                 return
         }
         
@@ -80,6 +80,18 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.captureSession.stopRunning()
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let ac = UIAlertController(title: "Hubo un error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }else {
+            let ac = UIAlertController(title: "¡Listo!", message: "Tu imagen ha sido guardada en tu carrete", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
 }
 
