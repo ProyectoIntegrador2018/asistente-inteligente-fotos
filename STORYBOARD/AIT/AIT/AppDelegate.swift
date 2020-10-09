@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,8 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        GIDSignIn.sharedInstance().clientID = "947527829006-6js42smo3qdiudkqm6m8nrt4g7cjd48a.apps.googleusercontent.com"
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        let sourceApplication = options[.sourceApplication] as? String
+        let annotation = options[.annotation]
+        
+        return GIDSignIn.sharedInstance()?.handle(url, sourceApplication: sourceApplication, annotation: annotation) ?? false
     }
 
     // MARK: UISceneSession Lifecycle
