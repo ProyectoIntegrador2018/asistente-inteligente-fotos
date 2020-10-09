@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseStorage
 import GoogleSignIn
 import GoogleAPIClientForREST
 import GTMSessionFetcher
@@ -36,32 +38,61 @@ class enviarFotosVC: UIViewController {
         // Start Google's OAuth authentication flow
         GIDSignIn.sharedInstance()?.signIn()
         print(googleUser?.profile.name ?? "No user", "is logged in.")
+        
         if ((googleUser) != nil) {
-            uploadMyFile()
-        }
-    }
-    
-    @IBAction func sendToFirestore(_ sender: Any) {
-        print("Sent to Firestore.")
-    }
-    
-    func uploadMyFile() {
-        if let fileURL = Bundle.main.url(
-            forResource: "my-image", withExtension: ".png") {
-            uploadFile(
+            
+            // File located on disk
+            let fileURL = Bundle.main.url(forResource: "my-image", withExtension: ".png")
+            if (fileURL == nil) {
+                print("No file found.")
+                let ac = UIAlertController(title: "Error", message: "No se ha encontrado la imagen.", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                present(ac, animated: true)
+            }
+            
+            // Upload file to Google Drive
+            uploadFileToDrive(
                 name: "my-image.png",
-                fileURL: fileURL,
+                fileURL: fileURL!,
                 mimeType: "image/png",
                 service: googleDriveService)
             let ac = UIAlertController(title: "Exito!", message: "Tu imagen ha sido enviada a Drive.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
-        }
-        else {
-            print("No file found.")
+            
         }
     }
     
+    @IBAction func sendToFirebase(_ sender: Any) {
+        
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        // File located on disk
+        let fileURL = Bundle.main.url(forResource: "my-image", withExtension: ".png")
+        if (fileURL == nil) {
+            print("No file found.")
+            let ac = UIAlertController(title: "Error", message: "No se ha encontrado la imagen.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
+        
+        // Create a reference to the file to upload
+        let imageRef = storageRef.child("my-image.png")
+        
+        // Create file metadata including the content type
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
+
+        // Upload the file to reference path "my-image.png"
+        imageRef.putFile(from: fileURL!, metadata: metadata)
+        
+        let ac = UIAlertController(title: "Exito!", message: "Tu imagen ha sido enviada a Firebase Storage.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
+        
+        print("Sent to Firebase Storage.")
+    }
 }
 
 extension enviarFotosVC: GIDSignInDelegate, GIDSignInUIDelegate {
@@ -79,7 +110,7 @@ extension enviarFotosVC: GIDSignInDelegate, GIDSignInUIDelegate {
     }
 }
 
-func uploadFile(
+func uploadFileToDrive(
     name: String,
     fileURL: URL,
     mimeType: String,
