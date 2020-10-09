@@ -5,7 +5,11 @@ target 'AIT' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for AIT
+  # Google Drive
 	pod 'GoogleAPIClientForREST/Drive', '~> 1.2.1'
 	pod 'GoogleSignIn', '~> 4.4.0'
+  
+  # Firebase
+  pod 'Firebase/Storage'
+  
 end

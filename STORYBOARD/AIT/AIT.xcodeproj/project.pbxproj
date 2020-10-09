@@ -14,6 +14,7 @@
 		3C2EFD762525A2CA0038EE7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C2EFD752525A2CA0038EE7C /* Assets.xcassets */; };
 		3C2EFD792525A2CA0038EE7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C2EFD772525A2CA0038EE7C /* LaunchScreen.storyboard */; };
 		638913A32530158900015C78 /* my-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 638913A22530158900015C78 /* my-image.png */; };
+		638913B52530CF2400015C78 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 638913B42530CF2400015C78 /* GoogleService-Info.plist */; };
 		63DAC7B5252FFDF0009AA331 /* enviarFotosVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DAC7B4252FFDF0009AA331 /* enviarFotosVC.swift */; };
 		8D4CFDA1252B893400BB5923 /* llantasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4CFDA0252B893400BB5923 /* llantasViewController.swift */; };
 		9F41640E4E8E1FE5F28D51D2 /* Pods_AIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E448216AA299ACCE34240D /* Pods_AIT.framework */; };
@@ -30,6 +31,7 @@
 		3C2EFD782525A2CA0038EE7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3C2EFD7A2525A2CA0038EE7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		638913A22530158900015C78 /* my-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "my-image.png"; path = "../../../../../pics/my-image.png"; sourceTree = "<group>"; };
+		638913B42530CF2400015C78 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		63DAC7B4252FFDF0009AA331 /* enviarFotosVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enviarFotosVC.swift; sourceTree = "<group>"; };
 		88E448216AA299ACCE34240D /* Pods_AIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D4CFDA0252B893400BB5923 /* llantasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = llantasViewController.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				638913A22530158900015C78 /* my-image.png */,
+				638913B42530CF2400015C78 /* GoogleService-Info.plist */,
 				3C2EFD6C2525A2C90038EE7C /* AppDelegate.swift */,
 				3C2EFD6E2525A2C90038EE7C /* SceneDelegate.swift */,
 				3C2EFD702525A2C90038EE7C /* ViewController.swift */,
@@ -162,6 +165,7 @@
 			files = (
 				3C2EFD792525A2CA0038EE7C /* LaunchScreen.storyboard in Resources */,
 				3C2EFD762525A2CA0038EE7C /* Assets.xcassets in Resources */,
+				638913B52530CF2400015C78 /* GoogleService-Info.plist in Resources */,
 				3C2EFD742525A2C90038EE7C /* Main.storyboard in Resources */,
 				638913A32530158900015C78 /* my-image.png in Resources */,
 			);
