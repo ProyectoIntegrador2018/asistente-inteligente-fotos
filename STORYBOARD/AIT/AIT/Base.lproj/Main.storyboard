@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="OSP-Vd-aY0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zeo-ne-ACY">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -30,7 +30,7 @@
                                             <color key="titleColor" systemColor="secondarySystemBackgroundColor"/>
                                         </state>
                                         <connections>
-                                            <segue destination="7mN-Vb-fyC" kind="show" id="T0Y-0F-r5x"/>
+                                            <action selector="llantasView:" destination="Zeo-ne-ACY" eventType="touchUpInside" id="sCz-kt-hpS"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWm-1e-UrA">
@@ -67,6 +67,9 @@
                         <viewLayoutGuide key="safeArea" id="e7U-NX-YBo"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <segue destination="7mN-Vb-fyC" kind="show" identifier="llantasSegue" id="fU5-Kc-XaR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZFu-nI-JHq" sceneMemberID="firstResponder"/>
             </objects>
@@ -121,7 +124,7 @@
         <!--Llantas View Controller-->
         <scene sceneID="pXI-8e-AZu">
             <objects>
-                <viewController storyboardIdentifier="camera" id="7mN-Vb-fyC" customClass="llantasViewController" customModule="AIT" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="7mN-Vb-fyC" customClass="llantasViewController" customModule="AIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0zn-fI-Ef6">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
