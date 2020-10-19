@@ -93,12 +93,12 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7M1-mh-Uqq">
-                                <rect key="frame" x="104" y="636" width="211" height="48"/>
+                                <rect key="frame" x="51" y="636" width="317" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="Envia a Firestore"/>
+                                <state key="normal" title="Envia a Firebase Storage"/>
                                 <connections>
-                                    <action selector="sendToFirestore:" destination="OSP-Vd-aY0" eventType="touchUpInside" id="r4N-j4-LKP"/>
+                                    <action selector="sendToFirebase:" destination="OSP-Vd-aY0" eventType="touchUpInside" id="r4N-j4-LKP"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Envio de Fotos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGs-rg-jSf">
