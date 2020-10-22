@@ -16,7 +16,6 @@
 		632664712532417400CB4653 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 632664702532417400CB4653 /* GoogleService-Info.plist */; };
 		638913DC25312A8800015C78 /* my-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 638913DB25312A8800015C78 /* my-image.png */; };
 		63DAC7B5252FFDF0009AA331 /* enviarFotosVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DAC7B4252FFDF0009AA331 /* enviarFotosVC.swift */; };
-		8D3F4E2B2530E87A00767FDE /* my-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F4E2A2530E87A00767FDE /* my-image.png */; };
 		8D4CFDA1252B893400BB5923 /* llantasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4CFDA0252B893400BB5923 /* llantasViewController.swift */; };
 		9F41640E4E8E1FE5F28D51D2 /* Pods_AIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E448216AA299ACCE34240D /* Pods_AIT.framework */; };
 /* End PBXBuildFile section */
@@ -59,6 +58,7 @@
 				3C2EFD6A2525A2C90038EE7C /* Products */,
 				D0E593DBC2764890DFDADF05 /* Pods */,
 				E9D5A2DCDED0B90CE85F1D29 /* Frameworks */,
+				63D7E0A625420C6B000B84CF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -86,6 +86,14 @@
 				63DAC7B4252FFDF0009AA331 /* enviarFotosVC.swift */,
 			);
 			path = AIT;
+			sourceTree = "<group>";
+		};
+		63D7E0A625420C6B000B84CF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				8D3F4E2A2530E87A00767FDE /* my-image.png */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		D0E593DBC2764890DFDADF05 /* Pods */ = {
