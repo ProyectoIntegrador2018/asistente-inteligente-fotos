@@ -30,7 +30,7 @@
                                             <color key="titleColor" systemColor="secondarySystemBackgroundColor"/>
                                         </state>
                                         <connections>
-                                            <segue destination="7mN-Vb-fyC" kind="show" id="T0Y-0F-r5x"/>
+                                            <segue destination="7mN-Vb-fyC" kind="presentation" modalPresentationStyle="currentContext" id="T0Y-0F-r5x"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWm-1e-UrA">
@@ -123,11 +123,11 @@
             <objects>
                 <viewController storyboardIdentifier="camera" id="7mN-Vb-fyC" customClass="llantasViewController" customModule="AIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0zn-fI-Ef6">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XIT-7w-OSz">
-                                <rect key="frame" x="47" y="723" width="320" height="79"/>
+                                <rect key="frame" x="47" y="774" width="320" height="79"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZT3-Ro-PJE">
@@ -151,7 +151,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dTe-HB-TDe">
-                                <rect key="frame" x="47" y="0.0" width="320" height="646"/>
+                                <rect key="frame" x="47" y="44" width="320" height="687"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
