@@ -25,6 +25,37 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         super.viewDidLoad()
     }
     
+    // This method you can use somewhere you need to know camera permission   state
+    func askPermission() {
+        let cameraPermissionStatus =  AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+
+        switch cameraPermissionStatus {
+        case .authorized:
+            print("Already Authorized")
+        case .denied:
+            print("denied")
+            let alert = UIAlertController(title: "Disculpa" , message: "No se puede continuar sin darle acceso a la camera en ajustes.",  preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .cancel,  handler: {_ in
+                                        self.performSegue(withIdentifier: "main", sender: nil)})
+            alert.addAction(action)
+            present(alert, animated: true, completion:nil)
+            
+        case .restricted:
+            print("restricted")
+        default:
+            AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: {
+                (granted :Bool) -> Void in
+
+                if granted == true {
+                    // User granted
+                    print("User granted")
+     DispatchQueue.main.async(){
+                //Do smth that you need in main thread
+                }
+                }
+            });
+        }
+    }
     func setupLivePreview() {
         
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -73,6 +104,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             }
         }
         catch let error  {
+            askPermission()
             print("Error al iniciar la Camara:  \(error.localizedDescription)")
         }
     }
@@ -84,9 +116,12 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
-            let ac = UIAlertController(title: "Hubo un error", message: error.localizedDescription, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+            print(error)
+            let alert = UIAlertController(title: "Disculpa" , message: "No se puede continuar sin darle acceso a la librería de fotos en ajustes.",  preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .cancel,  handler: {_ in
+                                        self.performSegue(withIdentifier: "main", sender: nil)})
+            alert.addAction(action)
+            present(alert, animated: true, completion:nil)
         }else {
             let ac = UIAlertController(title: "¡Listo!", message: "Tu imagen ha sido guardada en tu carrete", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
