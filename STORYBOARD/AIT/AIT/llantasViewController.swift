@@ -27,40 +27,40 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
    
     }
     
-
-
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    let orientation = UIDevice.current.orientation
-
-    switch (orientation) {
-    case .portrait:
-        videoPreviewLayer.connection!.videoOrientation = .portrait
-        DispatchQueue.main.async {
-            self.videoPreviewLayer.frame = self.previewView.bounds
-        }
-
-    case .landscapeLeft:
-        
-        videoPreviewLayer.connection!.videoOrientation = .landscapeRight
-    DispatchQueue.main.async {
-        self.videoPreviewLayer.frame = self.previewView.bounds
+        setCameraOrientation()
     }
+    
+    private func setCameraOrientation() {
+        let orientation = UIDevice.current.orientation
+        switch (orientation) {
+        case .portrait:
+            videoPreviewLayer.connection!.videoOrientation = .portrait
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
 
-    case .landscapeRight:
-        videoPreviewLayer.connection!.videoOrientation = .landscapeLeft
+        case .landscapeLeft:
+            
+            videoPreviewLayer.connection!.videoOrientation = .landscapeRight
         DispatchQueue.main.async {
             self.videoPreviewLayer.frame = self.previewView.bounds
         }
 
-    default:
-        videoPreviewLayer.connection!.videoOrientation = .portrait
-        DispatchQueue.main.async {
-            self.videoPreviewLayer.frame = self.previewView.bounds
+        case .landscapeRight:
+            videoPreviewLayer.connection!.videoOrientation = .landscapeLeft
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
+
+        default:
+            videoPreviewLayer.connection!.videoOrientation = .portrait
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
         }
-        
     }
-}
     
 
     func askPermission() {
@@ -98,7 +98,8 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
         videoPreviewLayer.videoGravity = .resizeAspect
-        videoPreviewLayer.connection?.videoOrientation = .portrait
+        setCameraOrientation()
+        //videoPreviewLayer.connection?.videoOrientation = .portrait
         previewView.layer.addSublayer(videoPreviewLayer)
         
         DispatchQueue.global(qos: .userInitiated).async { //[weak self] in

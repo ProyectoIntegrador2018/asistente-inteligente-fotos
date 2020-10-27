@@ -33,11 +33,7 @@
                                             <color key="titleColor" systemColor="secondarySystemBackgroundColor"/>
                                         </state>
                                         <connections>
-<<<<<<< HEAD
                                             <segue destination="7mN-Vb-fyC" kind="presentation" identifier="camera" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="T0Y-0F-r5x"/>
-=======
-                                            <action selector="llantasView:" destination="Zeo-ne-ACY" eventType="touchUpInside" id="sCz-kt-hpS"/>
->>>>>>> e02146efa8c49c71f4e1986eec28afad8798a1c0
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWm-1e-UrA">
@@ -73,6 +69,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="lVC-Yd-GQf"/>
                     <connections>
                         <segue destination="7mN-Vb-fyC" kind="show" identifier="llantasSegue" id="fU5-Kc-XaR"/>
                     </connections>
@@ -133,7 +130,6 @@
         <!--Llantas View Controller-->
         <scene sceneID="pXI-8e-AZu">
             <objects>
-<<<<<<< HEAD
                 <viewController storyboardIdentifier="camera" id="7mN-Vb-fyC" customClass="llantasViewController" customModule="AIT" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="t3C-Vd-Dx9"/>
@@ -141,11 +137,6 @@
                     </layoutGuides>
                     <view key="view" contentMode="scaleAspectFit" id="0zn-fI-Ef6">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
-=======
-                <viewController id="7mN-Vb-fyC" customClass="llantasViewController" customModule="AIT" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="0zn-fI-Ef6">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
->>>>>>> e02146efa8c49c71f4e1986eec28afad8798a1c0
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view autoresizesSubviews="NO" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dTe-HB-TDe">
@@ -178,7 +169,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="104"/>
                                         <state key="normal" image="backward.fill" catalog="system"/>
                                         <connections>
-                                            <segue destination="Zeo-ne-ACY" kind="presentation" identifier="main" modalPresentationStyle="automatic" modalTransitionStyle="flipHorizontal" id="gqA-xT-Ax9"/>
+                                            <segue destination="Zeo-ne-ACY" kind="show" identifier="main" id="gqA-xT-Ax9"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -203,6 +194,9 @@
             <point key="canvasLocation" x="1243.4782608695652" y="54.241071428571423"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="T0Y-0F-r5x"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="backward.fill" catalog="system" width="128" height="79"/>
         <image name="descarga (1)" width="225" height="225"/>

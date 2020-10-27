@@ -13,8 +13,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-<<<<<<< HEAD
-=======
 
     @IBAction func llantasView(_ sender: Any) {
         self.performSegue(withIdentifier: "llantasSegue", sender: self)
@@ -28,7 +26,10 @@ class ViewController: UIViewController {
 //               }
 //           }
     
->>>>>>> e02146efa8c49c71f4e1986eec28afad8798a1c0
-    
 }
 
+/*                <viewController id="7mN-Vb-fyC" customClass="llantasViewController" customModule="AIT" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0zn-fI-Ef6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/> */
+
+//                                            <action selector="llantasView:" destination="Zeo-ne-ACY" eventType="touchUpInside" id="sCz-kt-hpS"/>
