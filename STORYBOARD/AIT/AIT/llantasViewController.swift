@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 
+
 class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     @IBOutlet weak var previewView: UIView!
@@ -23,9 +24,45 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+   
     }
     
-    // This method you can use somewhere you need to know camera permission   state
+
+
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    let orientation = UIDevice.current.orientation
+
+    switch (orientation) {
+    case .portrait:
+        videoPreviewLayer.connection!.videoOrientation = .portrait
+        DispatchQueue.main.async {
+            self.videoPreviewLayer.frame = self.previewView.bounds
+        }
+
+    case .landscapeLeft:
+        
+        videoPreviewLayer.connection!.videoOrientation = .landscapeRight
+    DispatchQueue.main.async {
+        self.videoPreviewLayer.frame = self.previewView.bounds
+    }
+
+    case .landscapeRight:
+        videoPreviewLayer.connection!.videoOrientation = .landscapeLeft
+        DispatchQueue.main.async {
+            self.videoPreviewLayer.frame = self.previewView.bounds
+        }
+
+    default:
+        videoPreviewLayer.connection!.videoOrientation = .portrait
+        DispatchQueue.main.async {
+            self.videoPreviewLayer.frame = self.previewView.bounds
+        }
+        
+    }
+}
+    
+
     func askPermission() {
         let cameraPermissionStatus =  AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
 
@@ -101,6 +138,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 captureSession.addInput(input)
                 captureSession.addOutput(stillImageOutput)
                 setupLivePreview()
+                
             }
         }
         catch let error  {
@@ -109,10 +147,13 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.captureSession.stopRunning()
     }
+    
+    
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
