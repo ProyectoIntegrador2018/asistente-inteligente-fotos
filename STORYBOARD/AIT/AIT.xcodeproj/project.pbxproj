@@ -34,6 +34,7 @@
 		638913DB25312A8800015C78 /* my-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my-image.png"; sourceTree = "<group>"; };
 		63DAC7B4252FFDF0009AA331 /* enviarFotosVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enviarFotosVC.swift; sourceTree = "<group>"; };
 		88E448216AA299ACCE34240D /* Pods_AIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D3F4E2A2530E87A00767FDE /* my-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my-image.png"; sourceTree = "<group>"; };
 		8D4CFDA0252B893400BB5923 /* llantasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = llantasViewController.swift; sourceTree = "<group>"; };
 		F5221FC41F4FF9EC24182012 /* Pods-AIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIT.release.xcconfig"; path = "Target Support Files/Pods-AIT/Pods-AIT.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,6 +58,7 @@
 				3C2EFD6A2525A2C90038EE7C /* Products */,
 				D0E593DBC2764890DFDADF05 /* Pods */,
 				E9D5A2DCDED0B90CE85F1D29 /* Frameworks */,
+				63D7E0A625420C6B000B84CF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -84,6 +86,14 @@
 				63DAC7B4252FFDF0009AA331 /* enviarFotosVC.swift */,
 			);
 			path = AIT;
+			sourceTree = "<group>";
+		};
+		63D7E0A625420C6B000B84CF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				8D3F4E2A2530E87A00767FDE /* my-image.png */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		D0E593DBC2764890DFDADF05 /* Pods */ = {
@@ -164,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C2EFD792525A2CA0038EE7C /* LaunchScreen.storyboard in Resources */,
+				8D3F4E2B2530E87A00767FDE /* my-image.png in Resources */,
 				3C2EFD762525A2CA0038EE7C /* Assets.xcassets in Resources */,
 				632664712532417400CB4653 /* GoogleService-Info.plist in Resources */,
 				638913DC25312A8800015C78 /* my-image.png in Resources */,
