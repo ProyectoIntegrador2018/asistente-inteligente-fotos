@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11FC95A225487EB600A92651 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC95A125487EB600A92651 /* Enums.swift */; };
 		3C2EFD6D2525A2C90038EE7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EFD6C2525A2C90038EE7C /* AppDelegate.swift */; };
 		3C2EFD6F2525A2C90038EE7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EFD6E2525A2C90038EE7C /* SceneDelegate.swift */; };
 		3C2EFD712525A2C90038EE7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EFD702525A2C90038EE7C /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11FC95A125487EB600A92651 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		3B2021E62B8C7C5D655D5DB5 /* Pods-AIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIT.debug.xcconfig"; path = "Target Support Files/Pods-AIT/Pods-AIT.debug.xcconfig"; sourceTree = "<group>"; };
 		3C2EFD692525A2C90038EE7C /* AIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C2EFD6C2525A2C90038EE7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +53,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11FC95A025487EA300A92651 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11FC95A125487EB600A92651 /* Enums.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		3C2EFD602525A2C90038EE7C = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +83,7 @@
 		3C2EFD6B2525A2C90038EE7C /* AIT */ = {
 			isa = PBXGroup;
 			children = (
+				11FC95A025487EA300A92651 /* Resources */,
 				632664702532417400CB4653 /* GoogleService-Info.plist */,
 				638913DB25312A8800015C78 /* my-image.png */,
 				3C2EFD6C2525A2C90038EE7C /* AppDelegate.swift */,
@@ -174,7 +185,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C2EFD792525A2CA0038EE7C /* LaunchScreen.storyboard in Resources */,
-				8D3F4E2B2530E87A00767FDE /* my-image.png in Resources */,
 				3C2EFD762525A2CA0038EE7C /* Assets.xcassets in Resources */,
 				632664712532417400CB4653 /* GoogleService-Info.plist in Resources */,
 				638913DC25312A8800015C78 /* my-image.png in Resources */,
@@ -252,6 +262,7 @@
 				3C2EFD712525A2C90038EE7C /* ViewController.swift in Sources */,
 				3C2EFD6D2525A2C90038EE7C /* AppDelegate.swift in Sources */,
 				3C2EFD6F2525A2C90038EE7C /* SceneDelegate.swift in Sources */,
+				11FC95A225487EB600A92651 /* Enums.swift in Sources */,
 				63DAC7B5252FFDF0009AA331 /* enviarFotosVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

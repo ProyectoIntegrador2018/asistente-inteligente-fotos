@@ -10,7 +10,11 @@ import AVFoundation
 
 
 class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
-
+    
+    @IBOutlet weak var chatarraDirection: UIButton!
+    @IBOutlet weak var gridButton: UIButton!
+    @IBOutlet weak var layout: UIImageView!
+    
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var photoView: UIImageView!
     @IBAction func didTakePhoto(_ sender: Any) {
@@ -22,9 +26,16 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var stillImageOutput: AVCapturePhotoOutput!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     
+    // Variable que mostrará u ocultará el layout
+    var cameraType: CameraTypes!
+    var showGrid: Bool = false
+    var direction: ChatarraDirection = .toRight
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-   
+        
+        let flag = (cameraType == CameraTypes.chatarra) ? true : false
+        availabilityOfDirection(flag)
     }
     
     
@@ -42,11 +53,10 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             }
 
         case .landscapeLeft:
-            
             videoPreviewLayer.connection!.videoOrientation = .landscapeRight
-        DispatchQueue.main.async {
-            self.videoPreviewLayer.frame = self.previewView.bounds
-        }
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
 
         case .landscapeRight:
             videoPreviewLayer.connection!.videoOrientation = .landscapeLeft
@@ -62,7 +72,14 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
-
+    private func availabilityOfDirection(_ enabled: Bool) {
+        chatarraDirection.isEnabled = enabled
+        
+        if enabled {
+            chatarraDirection.setImage(Images.toRight, for: .normal)
+        }
+    }
+                
     func askPermission() {
         let cameraPermissionStatus =  AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
 
@@ -93,11 +110,11 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             });
         }
     }
+    
     func setupLivePreview() {
-        
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        videoPreviewLayer.videoGravity = .resizeAspect
+        videoPreviewLayer.videoGravity = .resizeAspectFill
         setCameraOrientation()
         //videoPreviewLayer.connection?.videoOrientation = .portrait
         previewView.layer.addSublayer(videoPreviewLayer)
@@ -154,6 +171,42 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         self.captureSession.stopRunning()
     }
     
+    @IBAction func tappedOnGrid(_ sender: Any) {
+        if !showGrid {
+            if cameraType == CameraTypes.llanta {
+                layout.image = Images.llantasLayout
+            }
+            else if direction == .toRight {
+                layout.image = Images.izqChatarraLayout
+            }
+            else {
+                layout.image = Images.derChatarraLayout
+            }
+            
+            gridButton.setImage(Images.hideGrid, for: .normal)
+        }
+        else {
+            layout.image = nil
+            gridButton.setImage(Images.showGrid, for: .normal)
+        }
+        
+        showGrid = !showGrid
+    }
+    
+    @IBAction func tappedDirection(_ sender: Any) {
+        if direction == .toRight {
+            chatarraDirection.setImage(Images.toLeft, for: .normal)
+            direction = .toLeft
+            
+            if showGrid { layout.image = Images.derChatarraLayout }
+        }
+        else {
+            chatarraDirection.setImage(Images.toRight, for: .normal)
+            direction = .toRight
+            
+            if showGrid { layout.image = Images.izqChatarraLayout }
+        }
+    }
     
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {

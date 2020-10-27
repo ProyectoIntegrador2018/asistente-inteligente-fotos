@@ -19,17 +19,15 @@ class ViewController: UIViewController {
         
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//           if segue.identifier == "segueToNext" {
-//               if let destination = segue.destination as? Modo1ViewController {
-//                   destination.nomb = nombres // you can pass value to destination view controller
-//               }
-//           }
-    
+    @IBAction func chatarraClick(_ sender: Any) {
+        self.performSegue(withIdentifier: "chatarraSegue", sender: nil)
+    }
+        
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let cameraType: CameraTypes = (segue.identifier == "llantasSegue") ? .llanta : .chatarra
+        print(cameraType)
+        if let destination = segue.destination as? llantasViewController {
+            destination.cameraType = cameraType
+        }
+    }
 }
-
-/*                <viewController id="7mN-Vb-fyC" customClass="llantasViewController" customModule="AIT" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="0zn-fI-Ef6">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/> */
-
-//                                            <action selector="llantasView:" destination="Zeo-ne-ACY" eventType="touchUpInside" id="sCz-kt-hpS"/>
