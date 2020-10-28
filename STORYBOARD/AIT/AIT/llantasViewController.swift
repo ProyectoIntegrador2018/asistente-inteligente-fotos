@@ -7,9 +7,17 @@
 
 import UIKit
 import AVFoundation
+import Metal
+import MetalPerformanceShaders
+import MetalKit
+
 
 class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
-
+    
+    @IBOutlet weak var chatarraDirection: UIButton!
+    @IBOutlet weak var gridButton: UIButton!
+    @IBOutlet weak var layout: UIImageView!
+    
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var photoView: UIImageView!
     @IBAction func didTakePhoto(_ sender: Any) {
@@ -21,11 +29,60 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var stillImageOutput: AVCapturePhotoOutput!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     
+    // Variable que mostrará u ocultará el layout
+    var cameraType: CameraTypes!
+    var showGrid: Bool = false
+    var direction: ChatarraDirection = .toRight
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let flag = (cameraType == CameraTypes.chatarra) ? true : false
+        availabilityOfDirection(flag)
     }
     
-    // This method you can use somewhere you need to know camera permission   state
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        setCameraOrientation()
+    }
+    
+    private func setCameraOrientation() {
+        let orientation = UIDevice.current.orientation
+        switch (orientation) {
+        case .portrait:
+            videoPreviewLayer.connection!.videoOrientation = .portrait
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
+
+        case .landscapeLeft:
+            videoPreviewLayer.connection!.videoOrientation = .landscapeRight
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
+
+        case .landscapeRight:
+            videoPreviewLayer.connection!.videoOrientation = .landscapeLeft
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
+
+        default:
+            videoPreviewLayer.connection!.videoOrientation = .portrait
+            DispatchQueue.main.async {
+                self.videoPreviewLayer.frame = self.previewView.bounds
+            }
+        }
+    }
+    
+    private func availabilityOfDirection(_ enabled: Bool) {
+        chatarraDirection.isEnabled = enabled
+        
+        if enabled {
+            chatarraDirection.setImage(Images.toRight, for: .normal)
+        }
+    }
+                
     func askPermission() {
         let cameraPermissionStatus =  AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
 
@@ -56,12 +113,13 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             });
         }
     }
+    
     func setupLivePreview() {
-        
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        videoPreviewLayer.videoGravity = .resizeAspect
-        videoPreviewLayer.connection?.videoOrientation = .portrait
+        videoPreviewLayer.videoGravity = .resizeAspectFill
+        setCameraOrientation()
+        //videoPreviewLayer.connection?.videoOrientation = .portrait
         previewView.layer.addSublayer(videoPreviewLayer)
         
         DispatchQueue.global(qos: .userInitiated).async { //[weak self] in
@@ -78,8 +136,17 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             else { return }
         
         let image = UIImage(data: imageData)
-        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-        photoView.image = image
+        let sharpness = calcSharpness(img: image!)
+        print(sharpness)
+        if (sharpness > 1) {
+            UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+            photoView.image = image
+        }
+        else {
+            let ac = UIAlertController(title: "Error", message: "La imagen esta borrosa. Por favor vuelva a intentarlo.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -101,6 +168,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 captureSession.addInput(input)
                 captureSession.addOutput(stillImageOutput)
                 setupLivePreview()
+                
             }
         }
         catch let error  {
@@ -109,10 +177,49 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.captureSession.stopRunning()
     }
+    
+    @IBAction func tappedOnGrid(_ sender: Any) {
+        if !showGrid {
+            if cameraType == CameraTypes.llanta {
+                layout.image = Images.llantasLayout
+            }
+            else if direction == .toRight {
+                layout.image = Images.izqChatarraLayout
+            }
+            else {
+                layout.image = Images.derChatarraLayout
+            }
+            
+            gridButton.setImage(Images.hideGrid, for: .normal)
+        }
+        else {
+            layout.image = nil
+            gridButton.setImage(Images.showGrid, for: .normal)
+        }
+        
+        showGrid = !showGrid
+    }
+    
+    @IBAction func tappedDirection(_ sender: Any) {
+        if direction == .toRight {
+            chatarraDirection.setImage(Images.toLeft, for: .normal)
+            direction = .toLeft
+            
+            if showGrid { layout.image = Images.derChatarraLayout }
+        }
+        else {
+            chatarraDirection.setImage(Images.toRight, for: .normal)
+            direction = .toRight
+            
+            if showGrid { layout.image = Images.izqChatarraLayout }
+        }
+    }
+    
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
@@ -130,4 +237,45 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
 }
 
-
+func calcSharpness(img: UIImage) -> Int8 {
+    let mtlDevice = MTLCreateSystemDefaultDevice()
+    let mtlCommandQueue = mtlDevice?.makeCommandQueue()
+    
+    // Create a command buffer for the transformation pipeline
+    let commandBuffer = mtlCommandQueue!.makeCommandBuffer()!
+    // These are the two built-in shaders we will use
+    let laplacian = MPSImageLaplacian(device: mtlDevice!)
+    let meanAndVariance = MPSImageStatisticsMeanAndVariance(device: mtlDevice!)
+    
+    // Load the captured pixel buffer as a texture
+    let textureLoader = MTKTextureLoader(device: mtlDevice!)
+    let sourceTexture = try! textureLoader.newTexture(cgImage: img.cgImage!, options: nil)
+    
+    // Create the destination texture for the laplacian transformation
+    let lapDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: sourceTexture.pixelFormat, width: sourceTexture.width, height: sourceTexture.height, mipmapped: false)
+    lapDesc.usage = [.shaderWrite, .shaderRead]
+    let lapTex = mtlDevice!.makeTexture(descriptor: lapDesc)!
+    
+    // Encode this as the first transformation to perform
+    laplacian.encode(commandBuffer: commandBuffer, sourceTexture: sourceTexture, destinationTexture: lapTex)
+    
+    // Create the destination texture for storing the variance.
+    let varianceTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: sourceTexture.pixelFormat, width: 2, height: 1, mipmapped: false)
+    varianceTextureDescriptor.usage = [.shaderWrite, .shaderRead]
+    let varianceTexture = mtlDevice!.makeTexture(descriptor: varianceTextureDescriptor)!
+    
+    // Encode this as the second transformation
+    meanAndVariance.encode(commandBuffer: commandBuffer, sourceTexture: lapTex, destinationTexture: varianceTexture)
+    
+    // Run the command buffer on the GPU and wait for the results
+    commandBuffer.commit()
+    commandBuffer.waitUntilCompleted()
+    
+    // The output will be just 2 pixels, one with the mean, the other the variance.
+    var result = [Int8](repeatElement(0, count: 2))
+    let region = MTLRegionMake2D(0, 0, 2, 1)
+    varianceTexture.getBytes(&result, bytesPerRow: 1 * 2 * 4, from: region, mipmapLevel: 0)
+    
+    let variance = result.last!
+    return variance
+}
