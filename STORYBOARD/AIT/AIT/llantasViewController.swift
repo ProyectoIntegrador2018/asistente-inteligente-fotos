@@ -11,6 +11,29 @@ import Metal
 import MetalPerformanceShaders
 import MetalKit
 
+extension UIImage {
+    func rotate(radians: Float) -> UIImage? {
+        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
+        // Trim off the extremely small float value to prevent core graphics from rounding it up
+        newSize.width = floor(newSize.width)
+        newSize.height = floor(newSize.height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, self.scale)
+        let context = UIGraphicsGetCurrentContext()!
+
+        // Move origin to middle
+        context.translateBy(x: newSize.width/2, y: newSize.height/2)
+        // Rotate around middle
+        context.rotate(by: CGFloat(radians))
+        // Draw the image at its center
+        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+}
 
 class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
@@ -36,44 +59,22 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        photoView.transform = photoView.transform.rotated(by: .pi * 1.5)
         let flag = (cameraType == CameraTypes.chatarra) ? true : false
         availabilityOfDirection(flag)
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        setCameraOrientation()
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscapeRight
     }
     
-    private func setCameraOrientation() {
-        let orientation = UIDevice.current.orientation
-        switch (orientation) {
-        case .portrait:
-            videoPreviewLayer.connection!.videoOrientation = .portrait
-            DispatchQueue.main.async {
-                self.videoPreviewLayer.frame = self.previewView.bounds
-            }
-
-        case .landscapeLeft:
-            videoPreviewLayer.connection!.videoOrientation = .landscapeRight
-            DispatchQueue.main.async {
-                self.videoPreviewLayer.frame = self.previewView.bounds
-            }
-
-        case .landscapeRight:
-            videoPreviewLayer.connection!.videoOrientation = .landscapeLeft
-            DispatchQueue.main.async {
-                self.videoPreviewLayer.frame = self.previewView.bounds
-            }
-
-        default:
-            videoPreviewLayer.connection!.videoOrientation = .portrait
-            DispatchQueue.main.async {
-                self.videoPreviewLayer.frame = self.previewView.bounds
-            }
-        }
+    override var shouldAutorotate: Bool {
+        return true
     }
+    
+
     
     private func availabilityOfDirection(_ enabled: Bool) {
         chatarraDirection.isEnabled = enabled
@@ -118,8 +119,8 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
         videoPreviewLayer.videoGravity = .resizeAspectFill
-        setCameraOrientation()
-        //videoPreviewLayer.connection?.videoOrientation = .portrait
+//        setCameraOrientation()
+        videoPreviewLayer.connection?.videoOrientation = .landscapeRight
         previewView.layer.addSublayer(videoPreviewLayer)
         
         DispatchQueue.global(qos: .userInitiated).async { //[weak self] in
@@ -135,12 +136,16 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         guard let imageData = photo.fileDataRepresentation()
             else { return }
         
-        let image = UIImage(data: imageData)
+        let newImage = UIImage(data: imageData)
+        let image = newImage!.rotate(radians: .pi * 1.5)
+//        let newImage = image.rotate(radians: .pi/2)
+//        image = image.rotate(radians: .pi/2)
         let sharpness = calcSharpness(img: image!)
         print(sharpness)
         if (sharpness > 1) {
             UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
             photoView.image = image
+
         }
         else {
             let ac = UIAlertController(title: "Error", message: "La imagen esta borrosa. Por favor vuelva a intentarlo.", preferredStyle: .alert)
