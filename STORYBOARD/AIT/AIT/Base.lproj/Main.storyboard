@@ -3,7 +3,7 @@
     <device id="retina3_5" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -144,30 +144,22 @@
                             <view autoresizesSubviews="NO" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dTe-HB-TDe">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="320"/>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u6k-JS-zw2">
-                                <rect key="frame" x="39" y="0.0" width="402" height="320"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u6k-JS-zw2">
+                                <rect key="frame" x="20" y="0.0" width="390" height="320"/>
                             </imageView>
                             <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XIT-7w-OSz" userLabel="Menu">
                                 <rect key="frame" x="402" y="0.0" width="78" height="320"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2P-tF-qWD">
-                                        <rect key="frame" x="17" y="82" width="51" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="showGrid"/>
-                                        <connections>
-                                            <action selector="tappedOnGrid:" destination="7mN-Vb-fyC" eventType="touchUpInside" id="BhQ-UF-Uug"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="efC-e7-Gzq">
-                                        <rect key="frame" x="739" y="0.0" width="107" height="80"/>
+                                        <rect key="frame" x="10" y="80" width="58" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="toRight"/>
                                         <connections>
                                             <action selector="tappedDirection:" destination="7mN-Vb-fyC" eventType="touchUpInside" id="Kg1-7R-LpI"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZT3-Ro-PJE">
-                                        <rect key="frame" x="10" y="144" width="58" height="58"/>
+                                        <rect key="frame" x="10" y="190" width="58" height="58"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                         <userDefinedRuntimeAttributes>
@@ -180,7 +172,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IKz-Lq-4Zy">
-                                        <rect key="frame" x="13" y="26" width="57" height="43"/>
+                                        <rect key="frame" x="13" y="26" width="58" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="104"/>
                                         <state key="normal" image="backward.fill" catalog="system"/>
@@ -189,9 +181,17 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9WK-f3-aLj">
-                                        <rect key="frame" x="8" y="241" width="60" height="40"/>
+                                        <rect key="frame" x="8" y="270" width="60" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2P-tF-qWD">
+                                        <rect key="frame" x="10" y="132" width="58" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="showGrid"/>
+                                        <connections>
+                                            <action selector="tappedOnGrid:" destination="7mN-Vb-fyC" eventType="touchUpInside" id="BhQ-UF-Uug"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -205,7 +205,11 @@
                             <constraint firstAttribute="trailing" secondItem="XIT-7w-OSz" secondAttribute="trailing" id="Oy0-i3-Ync"/>
                             <constraint firstItem="dTe-HB-TDe" firstAttribute="bottom" secondItem="vcp-f4-CVo" secondAttribute="top" id="Rv8-eO-4DN"/>
                             <constraint firstItem="XIT-7w-OSz" firstAttribute="top" secondItem="t3C-Vd-Dx9" secondAttribute="bottom" id="WEC-4f-SNc"/>
+                            <constraint firstItem="u6k-JS-zw2" firstAttribute="top" secondItem="t3C-Vd-Dx9" secondAttribute="bottom" id="YeZ-6o-Gb3"/>
+                            <constraint firstItem="u6k-JS-zw2" firstAttribute="leading" secondItem="dTe-HB-TDe" secondAttribute="leadingMargin" id="dDW-Ml-EpK"/>
                             <constraint firstItem="dTe-HB-TDe" firstAttribute="top" secondItem="XIT-7w-OSz" secondAttribute="top" id="dFb-Az-BI3"/>
+                            <constraint firstItem="XIT-7w-OSz" firstAttribute="leadingMargin" secondItem="u6k-JS-zw2" secondAttribute="trailing" id="iJS-8s-0B2"/>
+                            <constraint firstItem="vcp-f4-CVo" firstAttribute="top" secondItem="u6k-JS-zw2" secondAttribute="bottom" id="rsH-o0-Mhr"/>
                             <constraint firstItem="vcp-f4-CVo" firstAttribute="top" secondItem="XIT-7w-OSz" secondAttribute="bottom" id="yOP-xv-T37"/>
                         </constraints>
                     </view>
@@ -230,6 +234,7 @@
         <image name="backward.fill" catalog="system" width="128" height="79"/>
         <image name="descarga (1)" width="225" height="225"/>
         <image name="showGrid" width="24" height="24"/>
+        <image name="toRight" width="24" height="24"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

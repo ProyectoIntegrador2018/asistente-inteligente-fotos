@@ -62,6 +62,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 //        photoView.transform = photoView.transform.rotated(by: .pi * 1.5)
         let flag = (cameraType == CameraTypes.chatarra) ? true : false
         availabilityOfDirection(flag)
+        
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
     }
@@ -73,11 +74,10 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     override var shouldAutorotate: Bool {
         return true
     }
-    
-
-    
+        
     private func availabilityOfDirection(_ enabled: Bool) {
         chatarraDirection.isEnabled = enabled
+        chatarraDirection.isHidden = !enabled
         
         if enabled {
             chatarraDirection.setImage(Images.toRight, for: .normal)
@@ -118,7 +118,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     func setupLivePreview() {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        videoPreviewLayer.videoGravity = .resizeAspectFill
+        videoPreviewLayer.videoGravity = .resizeAspectFill        
 //        setCameraOrientation()
         videoPreviewLayer.connection?.videoOrientation = .landscapeRight
         previewView.layer.addSublayer(videoPreviewLayer)
@@ -189,7 +189,9 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     @IBAction func tappedOnGrid(_ sender: Any) {
+        print("tap on grid")
         if !showGrid {
+            print("about to show grid")
             if cameraType == CameraTypes.llanta {
                 layout.image = Images.llantasLayout
             }
@@ -203,6 +205,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             gridButton.setImage(Images.hideGrid, for: .normal)
         }
         else {
+            print("about to dismiss grid")
             layout.image = nil
             gridButton.setImage(Images.showGrid, for: .normal)
         }
@@ -211,6 +214,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     @IBAction func tappedDirection(_ sender: Any) {
+        print("tapped on direction")
         if direction == .toRight {
             chatarraDirection.setImage(Images.toLeft, for: .normal)
             direction = .toLeft
