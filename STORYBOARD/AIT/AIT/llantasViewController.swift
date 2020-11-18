@@ -294,6 +294,10 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 //        let newImage = image.rotate(radians: .pi/2)
 //        image = image.rotate(radians: .pi/2)
         
+        if cameraType == CameraTypes.llanta{
+            image = self.cropImageToSquare(image!)
+        }
+        
         if (OpenCVWrapper.isBlurry(newImage!)) {
             let ac = UIAlertController(title: "Error", message: "La imagen esta borrosa. Por favor vuelva a intentarlo.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
