@@ -250,9 +250,6 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         videoPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
-        if cameraType == CameraTypes.llanta {
-            captureSession.sessionPreset = .photo
-        }
         
         //setCameraOrientation(UIDevice.current.orientation)
         videoPreviewLayer.connection?.videoOrientation = .landscapeRight
