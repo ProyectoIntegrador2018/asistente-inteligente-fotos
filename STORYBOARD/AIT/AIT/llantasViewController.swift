@@ -297,10 +297,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 //        let newImage = image.rotate(radians: .pi/2)
 //        image = image.rotate(radians: .pi/2)
         
-        let sharpness = OpenCVWrapper.calcSharpness(newImage!)
-        print("sharpness:", sharpness)
-        
-        if (sharpness < 100) {
+        if (OpenCVWrapper.isBlurry(newImage!)) {
             let ac = UIAlertController(title: "Error", message: "La imagen esta borrosa. Por favor vuelva a intentarlo.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)

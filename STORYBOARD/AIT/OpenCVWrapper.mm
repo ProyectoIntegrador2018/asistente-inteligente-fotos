@@ -36,7 +36,7 @@
     return grayscale;
 }
 
-+ (double)calcSharpness:(UIImage *)image {
++ (BOOL)isBlurry:(UIImage *)image {
 
     cv::Mat mat;
     UIImageToMat(image, mat);
@@ -63,7 +63,9 @@
         }
     }
     
-    return maxLap;
+    std::cout << "sharpness: " << maxLap << std::endl;
+    
+    return (maxLap < 140);
 }
 
 @end
