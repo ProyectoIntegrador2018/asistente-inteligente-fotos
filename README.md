@@ -55,3 +55,14 @@ $ pod install
 ```
 
 3. Open .xcworkspace file
+
+4. Download [OpenCV v3.4.11](https://sourceforge.net/projects/opencvlibrary/files/3.4.11/opencv-3.4.11-ios-framework.zip/download)
+
+5. Drag the `opencv2.framework` bundle into the Xcode project tree, at the top level, to add it to your project.
+
+    **Note:**
+    - Copy items if needed is checked
+    - Create folder references is checked
+    - Add to targets: `AIT` is checked
+
+6. Click run button to build and run
