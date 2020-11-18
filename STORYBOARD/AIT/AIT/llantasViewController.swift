@@ -204,7 +204,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
          */
     }
-        
+    
     private func availabilityOfDirection(_ enabled: Bool) {
         chatarraDirection.isEnabled = enabled
         chatarraDirection.isHidden = !enabled
@@ -248,7 +248,8 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     func setupLivePreview() {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        videoPreviewLayer.videoGravity = .resizeAspectFill
+        videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        videoPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
         if cameraType == CameraTypes.llanta {
             captureSession.sessionPreset = .photo
         }
@@ -265,18 +266,41 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
+    func cropImageToSquare(_ image: UIImage) -> UIImage {
+                    let orientation: UIDeviceOrientation = UIDevice.current.orientation
+                    var imageWidth = image.size.width
+                    var imageHeight = image.size.height
+                    switch orientation {
+                    case .landscapeLeft, .landscapeRight:
+                        // Swap width and height if orientation is landscape
+                        imageWidth = image.size.height
+                        imageHeight = image.size.width
+                    default:
+                        break
+                    }
+
+                    // The center coordinate along Y axis
+                    let rcy = imageWidth * 0.5
+                    let rect = CGRect(x: rcy - imageHeight * 0.5, y: 0, width: imageHeight, height: imageHeight)
+                    let imageRef = image.cgImage?.cropping(to: rect)
+                    return UIImage(cgImage: imageRef!, scale: 1.0, orientation: image.imageOrientation)
+                }
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         
         guard let imageData = photo.fileDataRepresentation()
             else { return }
         
         let newImage = UIImage(data: imageData)
-        let image = newImage!.rotate(radians: .pi * 1.5)
+        var image = newImage!.rotate(radians: .pi * 1.5)
 //        let newImage = image.rotate(radians: .pi/2)
 //        image = image.rotate(radians: .pi/2)
         let sharpness = calcSharpness(img: image!)
         print(sharpness)
         if (sharpness > 1) {
+            if cameraType == CameraTypes.llanta{
+                image = self.cropImageToSquare(image!)
+            }
             UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
             photoView.image = image
 
