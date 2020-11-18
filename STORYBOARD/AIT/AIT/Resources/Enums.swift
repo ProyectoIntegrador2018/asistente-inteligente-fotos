@@ -13,8 +13,8 @@ enum Images {
     static let toLeft = UIImage(named: "toLeft")
     static let toRight = UIImage(named: "toRight")
     static let llantasLayout = UIImage(named: "Llantas layout")
-    static let izqChatarraLayout = UIImage(named: "Chatarra layout izq")
-    static let derChatarraLayout = UIImage(named: "Chatarra layout der")
+    static let izqChatarraLayout = UIImage(named: "layout_izq_der")
+    static let derChatarraLayout = UIImage(named: "layout_der_izq")
 }
 
 enum CameraTypes {

@@ -40,6 +40,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var chatarraDirection: UIButton!
     @IBOutlet weak var gridButton: UIButton!
     @IBOutlet weak var layout: UIImageView!
+    @IBOutlet weak var menu: UIView!
     
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var photoView: UIImageView!
@@ -62,10 +63,19 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 //        photoView.transform = photoView.transform.rotated(by: .pi * 1.5)
         let flag = (cameraType == CameraTypes.chatarra) ? true : false
         availabilityOfDirection(flag)
+        setUIConstraints(UIDevice.current.orientation)
+        
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
     }
     
+/*
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        let orientation = UIDevice.current.orientation
+        setCameraOrientation(orientation)
+    }
+ */
+            
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeRight
     }
@@ -74,10 +84,130 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         return true
     }
     
+    /*
+    private func setCameraOrientation(_ orientation: UIDeviceOrientation) {
+        switch (orientation) {
+        case .portrait:
+            videoPreviewLayer.connection!.videoOrientation = .portrait            
+            break
 
+        case .landscapeLeft:
+            videoPreviewLayer.connection!.videoOrientation = .landscapeLeft
+            break
+
+        case .landscapeRight:
+            videoPreviewLayer.connection!.videoOrientation = .landscapeRight
+            break
+
+        default:
+            videoPreviewLayer.connection!.videoOrientation = .portrait
+            break
+        }
+        
+        DispatchQueue.main.async {
+            self.setUIConstraints(.portrait)
+        }
+    }
+     */
     
+    private func setUIConstraints(_ orientation: UIDeviceOrientation) {
+        let screenWidth = CGFloat(UIScreen.main.bounds.width)
+        let screenHeigth = CGFloat(UIScreen.main.bounds.height)
+        
+        previewView.translatesAutoresizingMaskIntoConstraints = false
+        layout.translatesAutoresizingMaskIntoConstraints = false
+
+        if cameraType == CameraTypes.chatarra {
+            NSLayoutConstraint.activate([
+                previewView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                previewView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                previewView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                previewView.widthAnchor.constraint(equalToConstant: screenWidth),
+                
+                layout.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                layout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                layout.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                layout.widthAnchor.constraint(equalToConstant: screenWidth),
+            ])
+        }
+        else {
+            NSLayoutConstraint.activate([
+                previewView.trailingAnchor.constraint(equalTo: menu.leadingAnchor),
+                previewView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                previewView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                previewView.widthAnchor.constraint(equalToConstant: screenHeigth),
+                
+                layout.trailingAnchor.constraint(equalTo: menu.leadingAnchor),
+                layout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                layout.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                layout.widthAnchor.constraint(equalToConstant: screenHeigth),
+            ])
+        }
+        
+        /*
+        
+        if orientation == .landscapeLeft || orientation == .landscapeRight {
+            if cameraType == CameraTypes.chatarra {
+                NSLayoutConstraint.activate([
+                    previewView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                    previewView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    previewView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                    previewView.widthAnchor.constraint(equalToConstant: screenWidth),
+                    
+                    layout.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                    layout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    layout.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                    layout.widthAnchor.constraint(equalToConstant: screenWidth),
+                ])
+            }
+            else {
+                NSLayoutConstraint.activate([
+                    previewView.trailingAnchor.constraint(equalTo: menu.leadingAnchor),
+                    previewView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    previewView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                    previewView.widthAnchor.constraint(equalToConstant: screenHeigth),
+                    
+                    layout.trailingAnchor.constraint(equalTo: menu.leadingAnchor),
+                    layout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    layout.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                    layout.widthAnchor.constraint(equalToConstant: screenHeigth),
+                ])
+            }
+        }
+        else {
+            if cameraType == CameraTypes.chatarra {
+                NSLayoutConstraint.activate([
+                    previewView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                    previewView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    previewView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                    previewView.heightAnchor.constraint(equalToConstant: screenHeigth),
+                    
+                    layout.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                    layout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    layout.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                    layout.heightAnchor.constraint(equalToConstant: screenHeigth),
+                ])
+            }
+            else {
+                NSLayoutConstraint.activate([
+                    previewView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                    previewView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    previewView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                    previewView.heightAnchor.constraint(equalToConstant: screenWidth),
+                    
+                    layout.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                    layout.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    layout.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                    layout.heightAnchor.constraint(equalToConstant: screenWidth),
+                ])
+            }
+        }
+         */
+    }
+        
     private func availabilityOfDirection(_ enabled: Bool) {
         chatarraDirection.isEnabled = enabled
+        chatarraDirection.isHidden = !enabled
         
         if enabled {
             chatarraDirection.setImage(Images.toRight, for: .normal)
@@ -119,7 +249,11 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
         videoPreviewLayer.videoGravity = .resizeAspectFill
-//        setCameraOrientation()
+        if cameraType == CameraTypes.llanta {
+            captureSession.sessionPreset = .photo
+        }
+        
+        //setCameraOrientation(UIDevice.current.orientation)
         videoPreviewLayer.connection?.videoOrientation = .landscapeRight
         previewView.layer.addSublayer(videoPreviewLayer)
         
@@ -189,7 +323,9 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     @IBAction func tappedOnGrid(_ sender: Any) {
+        print("tap on grid")
         if !showGrid {
+            print("about to show grid")
             if cameraType == CameraTypes.llanta {
                 layout.image = Images.llantasLayout
             }
@@ -203,6 +339,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             gridButton.setImage(Images.hideGrid, for: .normal)
         }
         else {
+            print("about to dismiss grid")
             layout.image = nil
             gridButton.setImage(Images.showGrid, for: .normal)
         }
@@ -211,6 +348,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     @IBAction func tappedDirection(_ sender: Any) {
+        print("tapped on direction")
         if direction == .toRight {
             chatarraDirection.setImage(Images.toLeft, for: .normal)
             direction = .toLeft
