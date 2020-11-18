@@ -268,13 +268,14 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     func cropImageToSquare(_ image: UIImage) -> UIImage {
                     let orientation: UIDeviceOrientation = UIDevice.current.orientation
-                    var imageWidth = image.size.width
-                    var imageHeight = image.size.height
+                    let imageWidth = image.size.width
+                    let imageHeight = image.size.height
                     switch orientation {
                     case .landscapeLeft, .landscapeRight:
                         // Swap width and height if orientation is landscape
-                        imageWidth = image.size.height
-                        imageHeight = image.size.width
+                        //imageWidth = image.size.height
+                        //imageHeight = image.size.width
+                        break
                     default:
                         break
                     }
