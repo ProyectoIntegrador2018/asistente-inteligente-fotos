@@ -7,9 +7,8 @@
 
 import UIKit
 import AVFoundation
-import Metal
-import MetalPerformanceShaders
-import MetalKit
+import CoreML
+import Vision
 
 extension UIImage {
     func rotate(radians: Float) -> UIImage? {
@@ -294,20 +293,39 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 //        let newImage = image.rotate(radians: .pi/2)
 //        image = image.rotate(radians: .pi/2)
         
+        var sourceImage : UIImage
+        
         if cameraType == CameraTypes.llanta{
             image = self.cropImageToSquare(image!)
+            sourceImage = UIImage(named: "source_llanta")!
+        }
+        else {
+            sourceImage = UIImage(named: "source_chatarra")!
         }
         
-        if (OpenCVWrapper.isBlurry(newImage!)) {
-            let ac = UIAlertController(title: "Error", message: "La imagen esta borrosa. Por favor vuelva a intentarlo.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+        let distance = processImages(sourceImage: sourceImage, shotImage: image!)
+        print("distance: ", distance)
+        
+        if (cameraType == CameraTypes.llanta && distance > 20) {
+            presentError(msg: "No se ha detectado la llanta en la foto")
+        }
+        else if (cameraType == CameraTypes.chatarra && distance > 22) {
+            presentError(msg: "No se ha detectado chatarra en la foto")
+        }
+        else if (OpenCVWrapper.isBlurry(newImage!)) {
+            presentError(msg: "La imagen esta borrosa. Por favor vuelva a intentarlo.")
         }
         else {
             UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
             photoView.image = image
         }
         
+    }
+    
+    func presentError(msg: String) {
+        let ac = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -399,5 +417,38 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         }
+    }
+    
+    func featureprintObservationForImage(image: UIImage) -> VNFeaturePrintObservation? {
+        let requestHandler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
+        let request = VNGenerateImageFeaturePrintRequest()
+        do {
+          try requestHandler.perform([request])
+          return request.results?.first as? VNFeaturePrintObservation
+        } catch {
+          print("Vision error: \(error)")
+          return nil
+        }
+      }
+    
+    func processImages(sourceImage: UIImage, shotImage: UIImage) -> Float {
+            
+        var observation : VNFeaturePrintObservation?
+        var sourceObservation : VNFeaturePrintObservation?
+    
+        sourceObservation = featureprintObservationForImage(image: sourceImage)
+        observation = featureprintObservationForImage(image: shotImage)
+           
+        var distance = Float(0)
+        
+        do{
+            if let sourceObservation = sourceObservation{
+                try observation?.computeDistance(&distance, to: sourceObservation)
+            }
+        }catch{
+            print("error occurred")
+        }
+        
+        return distance
     }
 }

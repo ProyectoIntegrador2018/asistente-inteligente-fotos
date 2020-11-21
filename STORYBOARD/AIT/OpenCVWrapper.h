@@ -2,8 +2,6 @@
 //  OpenCVWrapper.h
 //  AIT
 //
-//  Created by Kevin Radtke on 18/11/20.
-//
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>

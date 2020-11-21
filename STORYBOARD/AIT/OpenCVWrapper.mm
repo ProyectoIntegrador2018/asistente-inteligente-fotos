@@ -2,8 +2,6 @@
 //  OpenCVWrapper.m
 //  AIT
 //
-//  Created by Kevin Radtke on 18/11/20.
-//
 
 #import <opencv2/opencv.hpp>
 #import "OpenCVWrapper.h"
@@ -63,7 +61,7 @@
         }
     }
     
-    std::cout << "sharpness: " << maxLap << std::endl;
+//    std::cout << "sharpness: " << maxLap << std::endl;
     
     return (maxLap < 140);
 }
