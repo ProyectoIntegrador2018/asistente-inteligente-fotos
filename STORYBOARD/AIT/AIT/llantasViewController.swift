@@ -7,9 +7,8 @@
 
 import UIKit
 import AVFoundation
-import Metal
-import MetalPerformanceShaders
-import MetalKit
+import CoreML
+import Vision
 
 extension UIImage {
     func rotate(radians: Float) -> UIImage? {
@@ -250,9 +249,6 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         videoPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
-        if cameraType == CameraTypes.llanta {
-            captureSession.sessionPreset = .photo
-        }
         
         //setCameraOrientation(UIDevice.current.orientation)
         videoPreviewLayer.connection?.videoOrientation = .landscapeRight
@@ -296,21 +292,40 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         var image = newImage!.rotate(radians: .pi * 1.5)
 //        let newImage = image.rotate(radians: .pi/2)
 //        image = image.rotate(radians: .pi/2)
-        let sharpness = calcSharpness(img: image!)
-        print(sharpness)
-        if (sharpness > 1) {
-            if cameraType == CameraTypes.llanta{
-                image = self.cropImageToSquare(image!)
-            }
-            UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-            photoView.image = image
-
+        
+        var sourceImage : UIImage
+        
+        if cameraType == CameraTypes.llanta{
+            image = self.cropImageToSquare(image!)
+            sourceImage = UIImage(named: "source_llanta")!
         }
         else {
-            let ac = UIAlertController(title: "Error", message: "La imagen esta borrosa. Por favor vuelva a intentarlo.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+            sourceImage = UIImage(named: "source_chatarra")!
         }
+        
+        let distance = processImages(sourceImage: sourceImage, shotImage: image!)
+        print("distance: ", distance)
+        
+        if (cameraType == CameraTypes.llanta && distance > 20) {
+            presentError(msg: "No se ha detectado la llanta en la foto")
+        }
+        else if (cameraType == CameraTypes.chatarra && distance > 22) {
+            presentError(msg: "No se ha detectado chatarra en la foto")
+        }
+        else if (OpenCVWrapper.isBlurry(newImage!)) {
+            presentError(msg: "La imagen esta borrosa. Por favor vuelva a intentarlo.")
+        }
+        else {
+            UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+            photoView.image = image
+        }
+        
+    }
+    
+    func presentError(msg: String) {
+        let ac = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -403,47 +418,37 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             present(ac, animated: true)
         }
     }
-}
-
-func calcSharpness(img: UIImage) -> Int8 {
-    let mtlDevice = MTLCreateSystemDefaultDevice()
-    let mtlCommandQueue = mtlDevice?.makeCommandQueue()
     
-    // Create a command buffer for the transformation pipeline
-    let commandBuffer = mtlCommandQueue!.makeCommandBuffer()!
-    // These are the two built-in shaders we will use
-    let laplacian = MPSImageLaplacian(device: mtlDevice!)
-    let meanAndVariance = MPSImageStatisticsMeanAndVariance(device: mtlDevice!)
+    func featureprintObservationForImage(image: UIImage) -> VNFeaturePrintObservation? {
+        let requestHandler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
+        let request = VNGenerateImageFeaturePrintRequest()
+        do {
+          try requestHandler.perform([request])
+          return request.results?.first as? VNFeaturePrintObservation
+        } catch {
+          print("Vision error: \(error)")
+          return nil
+        }
+      }
     
-    // Load the captured pixel buffer as a texture
-    let textureLoader = MTKTextureLoader(device: mtlDevice!)
-    let sourceTexture = try! textureLoader.newTexture(cgImage: img.cgImage!, options: nil)
+    func processImages(sourceImage: UIImage, shotImage: UIImage) -> Float {
+            
+        var observation : VNFeaturePrintObservation?
+        var sourceObservation : VNFeaturePrintObservation?
     
-    // Create the destination texture for the laplacian transformation
-    let lapDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: sourceTexture.pixelFormat, width: sourceTexture.width, height: sourceTexture.height, mipmapped: false)
-    lapDesc.usage = [.shaderWrite, .shaderRead]
-    let lapTex = mtlDevice!.makeTexture(descriptor: lapDesc)!
-    
-    // Encode this as the first transformation to perform
-    laplacian.encode(commandBuffer: commandBuffer, sourceTexture: sourceTexture, destinationTexture: lapTex)
-    
-    // Create the destination texture for storing the variance.
-    let varianceTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: sourceTexture.pixelFormat, width: 2, height: 1, mipmapped: false)
-    varianceTextureDescriptor.usage = [.shaderWrite, .shaderRead]
-    let varianceTexture = mtlDevice!.makeTexture(descriptor: varianceTextureDescriptor)!
-    
-    // Encode this as the second transformation
-    meanAndVariance.encode(commandBuffer: commandBuffer, sourceTexture: lapTex, destinationTexture: varianceTexture)
-    
-    // Run the command buffer on the GPU and wait for the results
-    commandBuffer.commit()
-    commandBuffer.waitUntilCompleted()
-    
-    // The output will be just 2 pixels, one with the mean, the other the variance.
-    var result = [Int8](repeatElement(0, count: 2))
-    let region = MTLRegionMake2D(0, 0, 2, 1)
-    varianceTexture.getBytes(&result, bytesPerRow: 1 * 2 * 4, from: region, mipmapLevel: 0)
-    
-    let variance = result.last!
-    return variance
+        sourceObservation = featureprintObservationForImage(image: sourceImage)
+        observation = featureprintObservationForImage(image: shotImage)
+           
+        var distance = Float(0)
+        
+        do{
+            if let sourceObservation = sourceObservation{
+                try observation?.computeDistance(&distance, to: sourceObservation)
+            }
+        }catch{
+            print("error occurred")
+        }
+        
+        return distance
+    }
 }
