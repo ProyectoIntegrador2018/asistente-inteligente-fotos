@@ -283,6 +283,27 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                     return UIImage(cgImage: imageRef!, scale: 1.0, orientation: image.imageOrientation)
                 }
     
+    func cropImageTo169(_ image: UIImage) -> UIImage {
+        let orientation: UIDeviceOrientation = UIDevice.current.orientation
+        let imageWidth = image.size.width
+        let imageHeight = image.size.height
+        switch orientation {
+        case .landscapeLeft, .landscapeRight:
+            // Swap width and height if orientation is landscape
+            //imageWidth = image.size.height
+            //imageHeight = image.size.width
+            break
+        default:
+            break
+        }
+
+        // The center coordinate along Y axis
+        let rcy = imageWidth * 0.5
+        let rect = CGRect(x: 0, y: imageHeight / 8, width: imageWidth, height: (imageHeight * 2) / 3)
+        let imageRef = image.cgImage?.cropping(to: rect)
+        return UIImage(cgImage: imageRef!, scale: 1.0, orientation: image.imageOrientation)
+    }
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         
         guard let imageData = photo.fileDataRepresentation()
@@ -300,6 +321,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             sourceImage = UIImage(named: "source_llanta")!
         }
         else {
+            image = self.cropImageTo169(image!)
             sourceImage = UIImage(named: "source_chatarra")!
         }
         
@@ -331,7 +353,7 @@ class llantasViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .high
+        captureSession.sessionPreset = .photo
         
         guard let backCamera = AVCaptureDevice.default(for: AVMediaType.video)
             else {
